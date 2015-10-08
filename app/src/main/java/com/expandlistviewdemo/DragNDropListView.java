@@ -42,10 +42,17 @@ public class DragNDropListView extends ExpandableListView {
 
     public DragNDropListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        screenHeight = display.getHeight();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR2) {
+            WindowManager wm = (WindowManager) context
+                    .getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            screenHeight = display.getHeight();
+        } else {
+            Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            screenHeight = size.y;
+        }
     }
 
     public void setSelectedBackgroud(int color) {
